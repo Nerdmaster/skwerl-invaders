@@ -29,16 +29,17 @@ class EnemyManager {
             this.enemiesLeft = 20;
 
             for (let i = 0; i < 5; i++) {
-            for (let j = 0; j < 4; j++) {
-                const enemyType = Math.floor(level / 2); // Simple logic for now
-                const enemyTemplate = EnemySprites.createEnemy(enemyType, null, difficulty);
+                for (let j = 0; j < 4; j++) {
+                    const enemyType = Math.floor(level / 2); // Simple logic for now
+                    const enemyTemplate = EnemySprites.createEnemy(enemyType, null, difficulty);
 
-                const x = 56 + i * 32 + i * 39;
-                const y = 32 + j * 32 + j * 20;
+                    const x = 56 + i * 32 + i * 39;
+                    const y = 32 + j * 32 + j * 20;
 
-                const enemy = new Enemy(x, y, enemyTemplate, this.missileManager, this.player);
-                enemy.loadAnimations(this.enemyImage);
-                this.enemies.push(enemy);
+                    const enemy = new Enemy(x, y, enemyTemplate, this.missileManager, this.player);
+                    enemy.loadAnimations(this.enemyImage);
+                    this.enemies.push(enemy);
+                }
             }
         }
     }
@@ -71,12 +72,13 @@ class EnemyManager {
             for (const enemy of this.enemies) {
                 enemy.defx += this.allOffX;
                 enemy.update();
-            enemy.defx -= this.allOffX;
+                enemy.defx -= this.allOffX;
 
-            if(enemy.action === 5){ //Dying
-                this.createFloater(enemy.x, enemy.y, enemy.value);
-                this.enemiesLeft --;
-                enemy.action = -1; // Prevent re-triggering
+                if(enemy.action === 5){ //Dying
+                    this.createFloater(enemy.x, enemy.y, enemy.value);
+                    this.enemiesLeft --;
+                    enemy.action = -1; // Prevent re-triggering
+                }
             }
         }
 
