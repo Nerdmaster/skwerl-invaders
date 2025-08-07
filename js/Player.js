@@ -32,12 +32,13 @@ class Player extends StatedSprite {
         this.initState(1, 4, 1); // Firing
         this.initState(2, 6, 2); // Hit
         this.initState(3, 2, 3); // Dying
-
-        this.image = null;
     }
 
-    setImage(image) {
-        this.image = image;
+    loadAnimations(spriteSheet) {
+        this.loadImagesFromSpriteSheet(0, spriteSheet, 0, 32, 32); // Normal
+        this.loadImagesFromSpriteSheet(1, spriteSheet, 32, 32, 32); // Firing
+        this.loadImagesFromSpriteSheet(2, spriteSheet, 64, 32, 32); // Hit
+        this.loadImagesFromSpriteSheet(3, spriteSheet, 96, 32, 32); // Dying
     }
 
     reset() {
@@ -126,9 +127,7 @@ class Player extends StatedSprite {
     }
 
     paint(ctx) {
-        if (this.visible && this.image) {
-            ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
-        }
+        super.paint(ctx);
 
         // Draw UI
         ctx.fillStyle = 'white';

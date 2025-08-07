@@ -26,12 +26,16 @@ class Enemy extends StatedSprite {
 
         this.defx = x;
         this.defy = y;
-
-        this.image = null;
     }
 
-    setImage(image) {
-        this.image = image;
+    loadAnimations(spriteSheet) {
+        // These are just placeholders, the actual y-coordinates will depend on the enemy type
+        this.loadImagesFromSpriteSheet(0, spriteSheet, 0, 32, 32); // Dance
+        this.loadImagesFromSpriteSheet(1, spriteSheet, 32, 32, 32); // Wait
+        this.loadImagesFromSpriteSheet(2, spriteSheet, 64, 32, 32); // Attack
+        this.loadImagesFromSpriteSheet(3, spriteSheet, 96, 32, 32); // Hurt
+        this.loadImagesFromSpriteSheet(4, spriteSheet, 128, 32, 32); // Dive
+        this.loadImagesFromSpriteSheet(5, spriteSheet, 160, 32, 32); // Dying
     }
 
     hit(damage) {
@@ -78,9 +82,7 @@ class Enemy extends StatedSprite {
     }
 
     paint(ctx) {
-        if (this.visible && this.image) {
-            ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
-        }
+        super.paint(ctx);
 
         if (this.visible) {
             // Draw health bar

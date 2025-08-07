@@ -11,6 +11,7 @@ class EnemyManager {
         this.directionX = 1;
         this.enemiesLeft = 0;
         this.enemyImage = null;
+        this.boss = null;
     }
 
     setEnemyImage(image) {
@@ -18,10 +19,16 @@ class EnemyManager {
     }
 
     createEnemies(level, difficulty) {
-        this.enemies = [];
-        this.enemiesLeft = 20;
+        if (level % 5 === 0) {
+            this.boss = new Boss(level, difficulty, this.enemyImage, this.missileManager, this.player);
+            this.enemies = [];
+            this.enemiesLeft = 1;
+        } else {
+            this.boss = null;
+            this.enemies = [];
+            this.enemiesLeft = 20;
 
-        for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < 5; i++) {
             for (let j = 0; j < 4; j++) {
                 const enemyType = Math.floor(level / 2); // Simple logic for now
                 const enemyTemplate = EnemySprites.createEnemy(enemyType, null, difficulty);
@@ -30,7 +37,7 @@ class EnemyManager {
                 const y = 32 + j * 32 + j * 20;
 
                 const enemy = new Enemy(x, y, enemyTemplate, this.missileManager, this.player);
-                enemy.setImage(this.enemyImage);
+                enemy.loadAnimations(this.enemyImage);
                 this.enemies.push(enemy);
             }
         }
@@ -57,10 +64,13 @@ class EnemyManager {
         if (this.allOffX >= 110 && this.directionX > 0) this.directionX = -1;
         if (this.allOffX <= -30 && this.directionX < 0) this.directionX = 1;
 
-        // Update enemies
-        for (const enemy of this.enemies) {
-            enemy.defx += this.allOffX;
-            enemy.update();
+        // Update enemies or boss
+        if (this.boss) {
+            this.boss.update();
+        } else {
+            for (const enemy of this.enemies) {
+                enemy.defx += this.allOffX;
+                enemy.update();
             enemy.defx -= this.allOffX;
 
             if(enemy.action === 5){ //Dying
@@ -81,8 +91,12 @@ class EnemyManager {
     }
 
     paint(ctx) {
-        for (const enemy of this.enemies) {
-            enemy.paint(ctx);
+        if (this.boss) {
+            this.boss.paint(ctx);
+        } else {
+            for (const enemy of this.enemies) {
+                enemy.paint(ctx);
+            }
         }
         for (const floater of this.floaters) {
             floater.paint(ctx);
