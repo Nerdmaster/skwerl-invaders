@@ -1,4 +1,4 @@
-module squirrel-invaders
+module skwerl-invaders
 
 go 1.24.3
 
